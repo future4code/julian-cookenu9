@@ -9,7 +9,7 @@ export class HashManager {
         return result
     }
 
-    public async compare(password:string, hash:string):Promise<boolean>{
-        return bcrypt.compare(password, hash)
+    public async compare(text:string, cipherText:string):Promise<boolean>{
+        return bcrypt.compare(text, cipherText)
     }
 }

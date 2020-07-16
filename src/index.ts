@@ -2,7 +2,8 @@ import { UserDatabase } from "./services/UserDatabase";
 import express from "express";
 import dotenv from "dotenv"
 import { AddressInfo } from "net";
-import { createUserEndpoint } from "./endpoints/CookeNuUsers";
+import { createUserEndpoint, login } from "./endpoints/Users";
+
 
 dotenv.config();
 
@@ -19,5 +20,6 @@ const server = app.listen(process.env.PORT || 3003, () => {
       }
 });
 
-
 app.post("/signup", createUserEndpoint)
+
+app.post("/login", login)

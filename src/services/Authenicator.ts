@@ -1,8 +1,7 @@
 import * as jwt from "jsonwebtoken";
 
-interface AuthenticationData {
-    email: string,
-    password: string
+interface AuthenticationData{
+    id: string
 }
 
 export class Authenticator {
@@ -10,7 +9,7 @@ export class Authenticator {
 
     generateToken(input: AuthenticationData): string {
         const token = jwt.sign(
-            { email: input.email, password: input.password}
+            { id: input.id}
             ,
             "bananinha"
             ,
@@ -21,11 +20,10 @@ export class Authenticator {
           return token 
     }
     
-    getData(token: string): AuthenticationData {
+    checkToken(token: string): AuthenticationData {
         const payload = jwt.verify(token, "bananinha") as any
         const result:  AuthenticationData = {
-            email: payload.email,
-            password: payload.password
+            id: payload.id
         }
         return result
     }

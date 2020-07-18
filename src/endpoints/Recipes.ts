@@ -4,26 +4,39 @@ import { HashManager } from "../services/HashManager"
 import { Authenticator } from "../services/Authenicator"
 import { RecipesDatabase } from "../services/RecipesDatabase"
 
-export const create = async (res: Response, req: Request): Promise<void> =>{
+export const create = async (req: Request, res: Response): Promise<void> =>{
     try {
         const authenticator = new Authenticator()
-        const user_id = authenticator.checkToken(String(req.headers.authorization))
+        const token = String(req.headers.authorization)
+        const userId = authenticator.checkToken(token)
         
         const generatorId = new GeneratorId()
         const id = generatorId.generate()
 
+        const title = req.body.title
+        const description = req.body.description
+
         const dataRecipe = {
             id: id,
-            title: req.body.title,
-            description: req.body.description,
-            user_id: user_id.id,
+            title: title,
+            description: description,
+            user_id: userId.id
         }
+        
 
         const recipesDb = new RecipesDatabase()
-        await recipesDb.create(dataRecipe.id, dataRecipe.title, dataRecipe.description, dataRecipe.user_id)
+        await recipesDb.create(
+            dataRecipe.id, 
+            dataRecipe.title, 
+            dataRecipe.description, 
+            dataRecipe.user_id)
 
-        res.status(200).send("Criado com sucesso!")
+        res.status(200)
+        .send("Criado com sucesso!")
     } catch (error) {
-        res.status(400).send(error)
+        console.log("estou aqui no erro")
+        res.status(400).send({
+            message: error.message,
+        })
     }
 }

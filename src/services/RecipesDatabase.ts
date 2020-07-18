@@ -10,15 +10,20 @@ export class RecipesDatabase extends BaseDatabase {
         description: string,
         user_id: string
         ):Promise<void> =>{
-            await this.getConnection().raw(`
-                INSERT INTO ${RecipesDatabase.tableName} (id, title, description, user_id)
-                VALUES (
-                    "${id}",
-                    "${title}",
-                    "${description}",
-                    "${user_id}"
-                )
-            `)
+            try {
+                await this.getConnection().raw(`
+                    INSERT INTO ${RecipesDatabase.tableName} (id, title, description, user_id)
+                    VALUES (
+                        "${id}",
+                        "${title}",
+                        "${description}",
+                        "${user_id}"
+                    )
+                `)
+            } catch (error) {
+                console.log(error)
+            }
+            
             
     }
 }
